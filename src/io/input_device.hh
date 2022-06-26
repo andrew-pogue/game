@@ -2,6 +2,7 @@
 
 #include <allegro5/allegro.h> // for ALLEGRO_EVENT
 #include <array>
+#include <iostream>
 
 #include "command.hh"
 
@@ -18,51 +19,90 @@ namespace io {
 
         // By default, every key is initialized to an empty command.
         // An empty command is a command that does nothing.
-        InputDevice();
+        InputDevice()
+            : log_()
+            , commands_() 
+        {
+        }
+
+        virtual ~InputDevice() { printf("~InputDevice()\n"); }
 
         // Updates a key's status if the given event implies it.
         virtual void update(const ALLEGRO_EVENT &event) = 0;
 
         // Gets all the commands issued since get_commands()
         // was last called.
-        auto get_commands();
+        auto get_commands() {
+        std::vector<Command> commands = {};
+
+            for (size_t key = 0; key < SIZE; key++) {
+                if (this->was_pressed((int)key)) {
+                    commands.push_back(commands_[key]);
+                    this->key_handled((int)key);
+                }
+            }
+
+            return commands;
+        }
 
         // Gets a reference to the command bound to the given input keycode.
-        Command& operator[](int keycode);
+        Command& operator[](int keycode) {
+            return commands_[keycode];
+        }
 
     protected:
         
         // Returns true if the key is/was activate/activated since the last frame.
-        bool was_pressed(int keycode) const;
+        bool was_pressed(int keycode) const {
+            return this->log_[keycode];
+        }
 
         // Returns true if the key's status changed from *de-active* to *active* in-between
         // this frame and the previous frame, and the entry was *not seen* by an input handler.
-        bool was_just_pressed(int keycode) const;
+        bool was_just_pressed(int keycode) const {
+            return this->log_[keycode] & (KEY_PRESSED | NOT_SEEN);
+        }
         
         // Returns true if the key's status changed from *active* to *de-active* in-between
         // this frame and the previous frame, and the entry was *not seen* by an input handler.
-        bool was_just_released(int keycode) const;
+        bool was_just_released(int keycode) const {
+            return !(this->log_[keycode] & KEY_PRESSED)
+                && this->log_[keycode] & NOT_SEEN;
+        }
 
         // Returns true if the key's status has remained *active* in-between this frame and
         // the previous frame, and the entry was *seen* by an input handler in either
         // this frame or in a previous frame.
-        bool has_remained_pressed(int keycode) const;
+        bool has_remained_pressed(int keycode) const {
+            return this->log_[keycode] & KEY_PRESSED
+                && !(this->log_[keycode] & NOT_SEEN);
+        }
         
         // Flags the key as handled by an input handler. This is necessary so that, in future
         // frames, we can deduce if the key 'has remained pressed'. It also resets a 'just
         // released' key so that, in future frames, it is flagged as 'was not pressed'.
-        void key_handled(int keycode);
+        void key_handled(int keycode) {
+            this->log_[keycode] &= KEY_PRESSED;
+        }
 
         // Flags all keys as handled by an input handler. Should be called once per
         // frame at the end of input handling unless you want a key to remain flagged
         // as 'was pressed'.
-        void all_keys_handled();
+        void all_keys_handled() {
+            for(int key = 0; key < SIZE; key++) {
+                this->key_handled(key);
+            }
+        }
 
         // Should be called when a key press event occurs.
-        void set_key_pressed(int keycode);
+        void set_key_pressed(int keycode) {
+            this->log_[keycode] = KEY_PRESSED | NOT_SEEN;
+        }
 
         // Should be called when a key release event occurs.
-        void set_key_released(int keycode);
+        void set_key_released(int keycode) {
+            this->log_[keycode] &= NOT_SEEN;
+        }
 
     private:
 
@@ -93,6 +133,13 @@ namespace io {
          * 'released' ---> key was de-activated since last frame
          * 'was pressed' > not 'was not pressed'
          **/
+
+        static const unsigned char
+            // The first bit is ticked if the key is or was pressed.
+            KEY_PRESSED  = 1,
+            // The second bit is ticked if the key's new status has 
+            // not been seen by an input handler.
+            NOT_SEEN = 2;
 
     }; // class InputDevice
 

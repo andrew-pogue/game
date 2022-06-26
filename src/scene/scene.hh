@@ -2,9 +2,10 @@
 
 #include <array>
 #include <memory>
+#include <stdio.h>
 
 #include "chunk.hh"
-#include "constants.hh"
+#include "../constants.hh"
 #include "position.hh"
 #include "tile.hh"
 
@@ -20,12 +21,14 @@ public:
     Scene(const Position &&pos)
         : origin(pos), chunk_array_() {}
 
+    ~Scene() { printf("~Scene()\n"); }
+
     Tile& at(const Position &pos) {
         return chunk_array_.at(index_of(pos))->at(pos);
     }
 
     Tile& operator[](const Position &pos) {
-        return chunk_array_.at(index_of(pos))->at(pos);
+        return chunk_array_[index_of(pos)]->operator[](pos);
     }
 
     Chunk& at(size_t i) {

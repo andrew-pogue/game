@@ -1,1 +1,5 @@
 servant pattern for render and update
+factory pattern for entities
+
+option 1: store data in entity
+option 2: store data outside of entity, use entity as API

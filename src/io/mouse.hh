@@ -1,11 +1,15 @@
 #pragma once
 
 #include <allegro5/allegro.h>
+#include <stdio.h>
 
 #include "input_device.hh"
 
 class Mouse : public io::InputDevice<20> {
 public:
+
+    Mouse() : io::InputDevice<20>() {}
+    ~Mouse() { printf("~Mouse()\n"); }
 
     // Updates the status of the mouses buttons, wheel, and/or position
     // if the given event implies it.

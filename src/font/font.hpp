@@ -1,24 +1,24 @@
 #pragma once
-#include <allegro5/allegro_font.h>
-#include <string>
+// #include <allegro5/allegro_font.h>
+// #include <string>
 
-// loading a bmp font with a size parameter?
+// // loading a bmp font with a size parameter?
 
-// Wrapper for ALLEGRO_FONT
-class Font {
-public:
+// // Wrapper for ALLEGRO_FONT
+// class Font {
+// public:
 
-    ~Font();
+//     // ~Font();
 
-    operator const ALLEGRO_FONT* () const;
+//     // operator const ALLEGRO_FONT* () const;
 
-private:
+// private:
 
-    Font();
-    Font(const std::string &path, int size);
+//     // Font();
+//     // Font(const std::string &path, int size);
 
-    ALLEGRO_FONT *allegro_font_;
+//     // ALLEGRO_FONT *allegro_font_;
 
-    friend class FontMap;
+//     // friend class FontMap;
 
-};
+// };

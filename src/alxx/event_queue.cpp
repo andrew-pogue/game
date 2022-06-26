@@ -3,12 +3,15 @@
 EventQueue::EventQueue() 
     : queue_(nullptr) 
 {
+    printf("EventQueue()\n");
     queue_ = al_create_event_queue();
     if (!queue_) throw "Error: failed to create event queue.";
 }
 
 EventQueue::~EventQueue() {
+    printf("~EventQueue(): ");
     al_destroy_event_queue(queue_);
+    printf("success\n");
 }
 
 void EventQueue::register_source(ALLEGRO_EVENT_SOURCE* source) {

@@ -1,43 +1,53 @@
 #pragma once
 #include "constants.hh"
-#include <queue>
+#include "graphic.hh"
+#include "property.hh"
+#include <memory>
+#include <iostream>
+#include <vector>
 
 class Entity {
-protected:
+public:
 
-    Entity(id_t id, signature_t sign = signature_t())
-        : id_(id), sign_() {}
+    Entity(cstr name, id_t id, signature_t sign = signature_t())
+        : name_(name), id_(id), sign_(sign), graphics_() {}
 
-    virtual void update() = 0;
-    virtual void render() const = 0;
+    void update() {
+        for (auto property : properties_) {
+            property->progress();
+        }
+    };
+
+    // get tiles to render from camera
+    // then translate tile position to display position
+    // then get entities to render from tile
+    // then pass display position to entities render(x,y)
+    void render(float x, float y) const {
+        printf("rendering %s\n", name_);
+        for (auto graphic : graphics_) {
+            graphic->draw(x,y);
+        }
+    };
+
+    void operator+=(Graphic *graphic) {
+        graphics_.emplace_back(graphic);
+    }
+
+    void operator+=(Property *property) {
+        properties_.emplace_back(property);
+    }
+
 
     id_t get_id() const { return id_; }
     signature_t get_signature() const { return sign_; }
 
 private:
 
+    cstr name_;
     id_t id_;
     signature_t sign_;
-    friend class EntityFactory;
 
-};
+    std::vector<std::shared_ptr<Graphic>> graphics_;
+    std::vector<std::shared_ptr<Property>> properties_;
 
-class EntityFactory {
-public:
-
-    EntityFactory() : next_id_(0) {}
-
-private:
-
-    id_t next_id_;
-    std::queue<id_t> freed_ids_;
-
-    id_t allot() {
-        if (freed_ids_.empty())
-            return next_id_;
-        id_t id = freed_ids_.front();
-        freed_ids_.pop();
-        return id;
-    }
-    
 };

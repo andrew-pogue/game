@@ -1,10 +1,10 @@
 #pragma once
 #include <allegro5/allegro.h>
 #include <stdio.h>
-#include "io/input_device.hh"
+#include "../io/input_device.hh"
 
 // Wrapper for ALLEGRO_DISPLAY
-class Display : public io::InputDevice<25> {
+class Display : public io::InputDevice<62> {
 public:
 
     Display(int width, int height);

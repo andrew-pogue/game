@@ -6,24 +6,27 @@
 class Timer {
 public:
 
-    Timer::Timer(double seconds) : timer_(nullptr) {
+    Timer(double seconds) : timer_(nullptr) {
+        printf("Timer(%f)\n", seconds);
         timer_ = al_create_timer(seconds);
         if (!timer_) throw "Error: failed to create timer.";
     }
 
-    Timer::~Timer() {
+    ~Timer() {
+        printf("~Timer(): ");
         al_destroy_timer(timer_);
+        printf("success\n");
     }
 
-    void Timer::start() {
+    void start() {
         al_start_timer(timer_);
     }
 
-    void Timer::stop() {
+    void stop() {
         al_stop_timer(timer_);
     }
 
-    void Timer::resume() {
+    void resume() {
         al_resume_timer(timer_);
     }
 

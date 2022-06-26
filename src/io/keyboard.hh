@@ -1,11 +1,15 @@
 #pragma once
 
 #include <allegro5/allegro.h>
+#include <stdio.h>
 
 #include "input_device.hh"
 
 class Keyboard : public io::InputDevice<ALLEGRO_KEY_MAX> {
 public:
+
+    Keyboard() : io::InputDevice<ALLEGRO_KEY_MAX>() {}
+    ~Keyboard() { printf("~Keyboard()\n"); }
 
     // Updates a key's status if the given event implies it.
     void update(const ALLEGRO_EVENT &event) override {

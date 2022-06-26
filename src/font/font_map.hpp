@@ -7,16 +7,16 @@
 class FontMap {
 public:
 
-    FontMap();
-    ~FontMap();
+    // FontMap();
+    // ~FontMap();
 
-    Font operator[](const std::pair<std::string, int> &key);
+    // Font operator[](const std::pair<std::string, int> &key);
 
 private:
 
-    std::unordered_map<std::pair<std::string, int>, ALLEGRO_FONT*> font_map_;
+    // std::unordered_map<std::pair<std::string, int>, ALLEGRO_FONT*> font_map_;
 
-    ALLEGRO_FONT* load_font(const std::string &path, int size);
-    ALLEGRO_FONT* load_builtin_font();
+    // ALLEGRO_FONT* load_font(const std::string &path, int size);
+    // ALLEGRO_FONT* load_builtin_font();
 
 };

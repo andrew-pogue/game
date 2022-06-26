@@ -1,6 +1,6 @@
 #pragma once
 
-#include "constants.hh"
+#include "../constants.hh"
 #include <unordered_map>
 #include <vector>
 
@@ -18,7 +18,7 @@ public:
     void remove(id_t id, signature_t sign) {
         // for each bit, check if another resident has that bit
         // if they do not, remove that bit from tile sign
-        for (auto i = 0; i < sign.size(); i++) {
+        for (size_t i = 0; i < sign.size(); i++) {
             if (!sign[i]) continue;
             for (auto r : residents_) {
                 if (sign[i] & r.second[i]) {
@@ -45,11 +45,11 @@ public:
         return signature_;
     }
 
-    std::vector<id_t>&& get_residents() const {
+    std::vector<id_t> get_residents() const {
         std::vector<id_t> result;
         for (auto r : residents_)
             result.push_back(r.first);
-        return std::move(result);
+        return result;
     }
 
 private:

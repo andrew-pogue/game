@@ -14,26 +14,26 @@ public:
     using function_t = std::function<void(unsigned)>;
     
     Command(function_t&& foo = [](unsigned){}, int flags=0)
-        : foo_(foo)
-        , flags(flags)
+        : flags(flags)
+        , foo_(foo)
     {
     }
 
     Command(const function_t& foo, int flags=0)
-        : foo_(foo)
-        , flags(flags)
+        : flags(flags)
+        , foo_(foo)
     {
     }
 
     Command(const Command &other) 
-        : foo_(other.foo_)
-        , flags(other.flags)
+        : flags(other.flags)
+        , foo_(other.foo_)
     {
     }
 
     Command(Command &&other) 
-        : foo_(std::move(other.foo_))
-        , flags(std::move(other.flags))
+        : flags(std::move(other.flags))
+        , foo_(std::move(other.foo_))
     {
     }
 

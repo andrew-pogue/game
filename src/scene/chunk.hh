@@ -3,7 +3,7 @@
 #include <array>
 #include <cmath>
 
-#include "constants.hh"
+#include "../constants.hh"
 #include "position.hh"
 #include "tile.hh"
 
