@@ -23,7 +23,7 @@ public:
     // then get entities to render from tile
     // then pass display position to entities render(x,y)
     void render(float x, float y) const {
-        printf("rendering %s\n", name_);
+        // printf("rendering %s\n", name_);
         for (auto graphic : graphics_) {
             graphic->draw(x,y);
         }

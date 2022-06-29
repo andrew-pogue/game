@@ -9,11 +9,15 @@
 #include "alxx/timer.hpp"
 #include "constants.hh"
 #include "entity.hh"
-#include "font/font_map.hpp"
 #include "glyh.hh"
 #include "io/keyboard.hh"
 #include "io/mouse.hh"
 #include "scene/scene.hh"
+
+const signature_t
+    COLLIDE = 1,
+    MOVE = 2;
+const float SPEED = 5.0f;
 
 class Game {
 public:
@@ -26,6 +30,9 @@ public:
         , keyboard_()
         , mouse_(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 0)
         , scene_({0,0,0})
+        , player_(nullptr)
+        , x_((float)WINDOW_WIDTH/2.0f)
+        , y_((float)WINDOW_HEIGHT/2.0f)
     {
         event_queue_.register_source(al_get_keyboard_event_source());
         event_queue_.register_source(al_get_mouse_event_source());
@@ -39,6 +46,22 @@ public:
         keyboard_[ALLEGRO_KEY_ESCAPE] = [&](unsigned){
             status_[PLAY] = false;
         };
+
+        keyboard_[ALLEGRO_KEY_UP] = [&](unsigned){
+            y_ -= SPEED;
+        };
+
+        keyboard_[ALLEGRO_KEY_DOWN] = [&](unsigned){
+            y_ += SPEED;
+        };
+
+        keyboard_[ALLEGRO_KEY_LEFT] = [&](unsigned){
+            x_ -= SPEED;
+        };
+
+        keyboard_[ALLEGRO_KEY_RIGHT] = [&](unsigned){
+            x_ += SPEED;
+        };
     }
     
     ~Game() {
@@ -50,9 +73,10 @@ public:
         status_[PLAY] = true;
         ALLEGRO_EVENT event;
 
-        Entity player("player", 0);
-        auto font = al_create_builtin_font();
-        player += new Glyph('@', font, "white");
+        player_ = new Entity("player", 0, MOVE | COLLIDE);
+        Font font("assets/font/PressStart2P-Regular.ttf", 36);
+        printf("Font=%s\n", font.name());
+        *player_ += new Glyph('@', font, "white");
 
         frame_timer_.start();
         while(status_[PLAY]) {
@@ -62,7 +86,7 @@ public:
             keyboard_.update(event);
             mouse_.update(event);
 
-            player.update();
+            player_->update();
             this->update();
             
             if (event.type == ALLEGRO_EVENT_TIMER) {
@@ -73,14 +97,14 @@ public:
 
                 status_[RENDER] = false;
                 al_clear_to_color(al_map_rgb(0,0,0));
-                player.render((float)WINDOW_WIDTH/2.0f, (float)WINDOW_HEIGHT/2.0f);
+                player_->render(x_, y_);
                 al_flip_display();
 
                 // this->render();
             }
         }
     
-        al_destroy_font(font);
+        delete player_;
         printf("Exit\n");
     }
 
@@ -117,5 +141,7 @@ protected:
     Keyboard keyboard_;
     Mouse mouse_;
     Scene scene_;
+    Entity *player_;
+    float x_, y_;
 
 };

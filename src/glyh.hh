@@ -10,10 +10,11 @@
 
 struct Glyph : public Graphic {
 
-    Glyph(int codepoint, Font font, Color color)
+    Glyph(int codepoint, Font font, Color color, int flags=0)
         : codepoint_(codepoint)
         , color_(color)
         , font_(font)
+        , flags_(flags)
     {
     }
 
@@ -26,7 +27,7 @@ struct Glyph : public Graphic {
     Font get_font() const { return font_; }
 
     void draw(float x, float y) const override {
-        printf("drawing %i at (%f,%f)\n", codepoint_, x, y);
+        // printf("drawing %i at (%f,%f)\n", codepoint_, x, y);
         al_draw_glyph(
             font_,
             color_,
@@ -40,5 +41,6 @@ private:
     int codepoint_;
     Color color_;
     Font font_;
+    int flags_;
 
 };
