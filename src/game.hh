@@ -10,6 +10,7 @@
 #include "constants.hh"
 #include "entity.hh"
 #include "glyh.hh"
+#include "text.hh"
 #include "io/keyboard.hh"
 #include "io/mouse.hh"
 #include "scene/scene.hh"
@@ -75,6 +76,8 @@ public:
 
         player_ = new Entity("player", 0, MOVE | COLLIDE);
         Font font("assets/font/PressStart2P-Regular.ttf", 36);
+        Entity hw("HW", 1);
+        hw += new Text("Hello World!", font, "green", Text::ALIGN_CENTER);
         printf("Font=%s\n", font.name());
         *player_ += new Glyph('@', font, "white");
 
@@ -98,6 +101,7 @@ public:
                 status_[RENDER] = false;
                 al_clear_to_color(al_map_rgb(0,0,0));
                 player_->render(x_, y_);
+                hw.render(250.0f,100.0f);
                 al_flip_display();
 
                 // this->render();
