@@ -2,8 +2,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include "graphic.hh"
-#include "alxx/font.hh"
-#include "alxx/color.hh"
+#include "font.hh"
+#include "color.hh"
 #include "constants.hh"
 
 class Text : public Graphic {
@@ -21,11 +21,16 @@ public:
         , color_(color)
         , flags_(flags)
     {
+        if (debug) printf("Text()\n");
     }
+
+    ~Text() { if (debug) printf("~Text()\n"); }
 
     void draw(float x, float y) const override {
         al_draw_text(font_, color_, x, y, flags_, string_);
     }
+
+    static inline bool debug = false;
 
 private:
 

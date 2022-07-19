@@ -1,5 +1,0 @@
-servant pattern for render and update
-factory pattern for entities
-
-object oriented approach: store data in entity
-data oriented approach: store data outside of entity, use entity as interface

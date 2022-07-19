@@ -1,7 +1,6 @@
 #pragma once
-#include "component.hh"
 
-class Property : public Component {
+class Property {
 public:
 
     virtual ~Property() {}

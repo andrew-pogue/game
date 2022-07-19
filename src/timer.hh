@@ -7,15 +7,14 @@ class Timer {
 public:
 
     Timer(double seconds) : timer_(nullptr) {
-        printf("Timer(%f)\n", seconds);
+        if (debug) printf("Timer(%f)\n", seconds);
         timer_ = al_create_timer(seconds);
         if (!timer_) throw "Error: failed to create timer.";
     }
 
     ~Timer() {
-        printf("~Timer(): ");
+        if (debug) printf("~Timer(): ");
         al_destroy_timer(timer_);
-        printf("success\n");
     }
 
     void start() {
@@ -37,6 +36,8 @@ public:
     operator ALLEGRO_EVENT_SOURCE*() {
         return al_get_timer_event_source(timer_); 
     }
+
+    static inline bool debug = false;
 
 private:
 

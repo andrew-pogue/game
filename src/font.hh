@@ -5,7 +5,7 @@
 #include <memory.h>
 #include <stdio.h>
 #include <string>
-#include "../util.hh"
+#include "util.hh"
 
 class Font {
 public:
@@ -36,8 +36,8 @@ public:
         font_ = other.font_;
     }
 
-    cstr path() const { return path_; }
-    cstr name() const { return name_; }
+    cstr path() const { return path_.c_str(); }
+    cstr name() const { return name_.c_str(); }
     int size() const { return size_; }
     int flags() const { return flags_; }
 
@@ -46,13 +46,12 @@ public:
 
 protected:
 
-    cstr path_, name_;
+    std::string path_, name_;
     int size_, flags_;
     std::shared_ptr<ALLEGRO_FONT> font_;
 
     struct AllegroFontDeleter {
         void operator()(ALLEGRO_FONT *font) {
-            printf("AllegreFontDeleter called\n");
             al_destroy_font(font);
         }
     };

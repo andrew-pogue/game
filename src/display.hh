@@ -1,25 +1,23 @@
 #pragma once
 #include <allegro5/allegro.h>
 #include <stdio.h>
-#include "../io/input_device.hh"
+#include <utility>
 
 // Wrapper for ALLEGRO_DISPLAY
-class Display : public io::InputDevice<62> {
+class Display {
 public:
 
     Display(int width, int height);
     Display(int width, int height, const char *title);
     ~Display();
 
-    int get_height() const;
-    int get_width() const;
+    int height() const;
+    int width() const;
 
     void set_title(const char *title);
 
     operator ALLEGRO_DISPLAY* ();
     operator ALLEGRO_EVENT_SOURCE* ();
-
-    void update(const ALLEGRO_EVENT &event) override;
     
     static int get_default_flags();
     static int get_default_option(int option, int *importance);

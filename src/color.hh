@@ -1,7 +1,7 @@
 #pragma once
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h>
-#include "../constants.hh"
+#include "constants.hh"
 
 class Color {
 public:

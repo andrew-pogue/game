@@ -43,24 +43,22 @@ int main (int argc, char **argv) {
     //     }
     // }
 
-    Game game;
-    game.play();
-
     // Game* game = nullptr;
 
     // game = new Game();
     
-    // try {
-    //     game = new Game(font_path, font_size);
-    //     game->play();
-    // }
+    try {
+        // Game::debug = true;
+        // Camera::debug = true;
+        // Level<10,10,1>::debug = true;
+        Game game("Roguelike");
+        game.play();
+    }
 
-    // catch(const char * error) {
-    //     printf("%s\n", error);
-    //     delete game;
-    //     printf("Main End\n");
-    //     return 1;
-    // }
+    catch(const char * error) {
+        printf("%s\n", error);
+        return 1;
+    }
 
     // delete game;
     return 0;

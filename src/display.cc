@@ -1,26 +1,21 @@
-#include "display.hpp"
+#include "display.hh"
 
 // ================ / PUBLIC API / ===============================================
 
 Display::Display(int width, int height)
-    : io::InputDevice<62>()
-    , display_(al_create_display(width, height))
+    : display_(al_create_display(width, height))
 {
-    printf("Display(%i, %i)\n", width, height);
     if (!display_) throw "Error: failed to create display.";
 }
 
 Display::Display(int width, int height, const char *title)
-    : io::InputDevice<62>()
-    , display_(al_create_display(width, height))
+    : display_(al_create_display(width, height))
 {
-    printf("Display(%i, %i, %s)\n", width, height, title);
     if (!display_) throw "Error: failed to create display.";
     this->set_title(title);
 }
 
 Display::~Display() {
-    printf("~Display(): ");
     al_destroy_display(display_);
     /*
         If the target bitmap of the calling thread is tied to the display,
@@ -31,14 +26,13 @@ Display::~Display() {
         currently targeting a bitmap which is tied to the display before you
         destroy it.
     */
-    printf("success\n");
 }
 
-int Display::get_height() const {
+int Display::height() const {
     return al_get_display_height(display_);
 }
 
-int Display::get_width() const {
+int Display::width() const {
     return al_get_display_width(display_);
 }
 
@@ -52,10 +46,6 @@ Display::operator ALLEGRO_DISPLAY* () {
 
 Display::operator ALLEGRO_EVENT_SOURCE* () {
     return al_get_display_event_source(display_);
-}
-
-void Display::update(const ALLEGRO_EVENT &event) {
-    if (event.type <= 62) this->set_key_pressed(event.type);
 }
 
 // ================ / STATIC API / ===============================================
